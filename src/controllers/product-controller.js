@@ -72,8 +72,22 @@ exports.post = (request, response, next) => {
 };
 
 exports.put = (request, response, next) => {
-  const id = request.params.id;
-  response.status(200).send({ id: id, item: request.body });
+  Product.findOneAndUpdate(request.params.id, {
+    $set: {
+      title: request.body.title,
+      description: request.body.description,
+      price: request.body.price,
+      slug: request.body.slug,
+    },
+  })
+    .then((data) => {
+      response.status(200).send({ message: "Produto atualizado com sucesso" });
+    })
+    .catch((e) => {
+      response
+        .status(400)
+        .send({ message: "Falha ao atualizar o produto", data: e });
+    });
 };
 
 exports.delete = (request, response, next) => {
