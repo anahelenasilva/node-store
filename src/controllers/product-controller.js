@@ -97,7 +97,7 @@ exports.put = async (request, response, next) => {
 
 exports.delete = async (request, response, next) => {
   try {
-    var data = await repository.delete(request.params.id);
+    var data = await repository.delete(request.body.id);
     response.status(200).send(data);
   } catch (error) {
     response
