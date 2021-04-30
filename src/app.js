@@ -1,8 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const app = express();
 const router = express.Router();
+
+mongoose.connect("connection string");
 
 const indexRoute = require("./routes/index-route");
 const productRoute = require("./routes/product-route");
