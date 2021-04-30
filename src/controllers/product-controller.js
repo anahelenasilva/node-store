@@ -15,6 +15,21 @@ exports.get = (request, response, next) => {
     });
 };
 
+exports.getBySlug = (request, response, next) => {
+  Product.findOne(
+    { slug: request.params.slug, active: true },
+    "title price slug tags"
+  )
+    .then((data) => {
+      response.status(200).send(data);
+    })
+    .catch((e) => {
+      response
+        .status(400)
+        .send({ message: "Falha ao cadastrar o produto", data: e });
+    });
+};
+
 exports.post = (request, response, next) => {
   var product = new Product(request.body);
   product
