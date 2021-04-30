@@ -11,7 +11,7 @@ exports.get = (request, response, next) => {
     .catch((e) => {
       response
         .status(400)
-        .send({ message: "Falha ao cadastrar o produto", data: e });
+        .send({ message: "Falha ao retornar o produto", data: e });
     });
 };
 
@@ -26,7 +26,34 @@ exports.getBySlug = (request, response, next) => {
     .catch((e) => {
       response
         .status(400)
-        .send({ message: "Falha ao cadastrar o produto", data: e });
+        .send({ message: "Falha ao retornar o produto", data: e });
+    });
+};
+
+exports.getById = (request, response, next) => {
+  Product.findById(request.params.id)
+    .then((data) => {
+      response.status(200).send(data);
+    })
+    .catch((e) => {
+      response
+        .status(400)
+        .send({ message: "Falha ao retornar o produto", data: e });
+    });
+};
+
+exports.getByTag = (request, response, next) => {
+  Product.find({
+    tags: request.params.tag,
+    active: true,
+  })
+    .then((data) => {
+      response.status(200).send(data);
+    })
+    .catch((e) => {
+      response
+        .status(400)
+        .send({ message: "Falha ao retornar o produto", data: e });
     });
 };
 
