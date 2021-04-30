@@ -91,5 +91,13 @@ exports.put = (request, response, next) => {
 };
 
 exports.delete = (request, response, next) => {
-  response.status(200).send(request.body);
+  Product.findOneAndRemove(request.params.id)
+    .then((data) => {
+      response.status(200).send({ message: "Produto removido com sucesso" });
+    })
+    .catch((e) => {
+      response
+        .status(400)
+        .send({ message: "Falha ao removido o produto", data: e });
+    });
 };
