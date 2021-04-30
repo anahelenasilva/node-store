@@ -5,7 +5,11 @@ const mongoose = require("mongoose");
 const app = express();
 const router = express.Router();
 
-mongoose.connect("connection string");
+mongoose.connect(
+  ""
+);
+
+const Product = require("./models/product");
 
 const indexRoute = require("./routes/index-route");
 const productRoute = require("./routes/product-route");
