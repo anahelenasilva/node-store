@@ -3,6 +3,7 @@
 const repository = require("../repositories/customer-repository");
 const ValidationContract = require("../validators/fluent-validator");
 const md5 = require("md5");
+const emailService = require("../services/email-service");
 
 exports.get = async (request, response, next) => {
   try {
@@ -44,6 +45,9 @@ exports.post = async (request, response, next) => {
     };
 
     var data = await repository.create(customer);
+
+    var emailBody = global.EMAIL_TEMPLATE.replace("{0}", request.body.name);
+    emailService.send(request.body.email, "Bem vindo ao NodeStore", emailBody);
 
     response.status(201).send({
       message: "Cliente cadastrado com sucesso",
