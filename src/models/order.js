@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+  },
   number: {
     type: String,
     required: true,
@@ -19,10 +23,6 @@ const orderSchema = new Schema({
     required: true,
     enum: ["created", "done"],
     default: "created",
-  },
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
   },
   items: [
     {

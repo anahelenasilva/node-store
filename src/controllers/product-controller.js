@@ -1,7 +1,5 @@
 "use strict";
 
-const mongoose = require("mongoose");
-const Product = mongoose.model("Product");
 const repository = require("../repositories/product-repository");
 const ValidationContract = require("../validators/fluent-validator");
 
@@ -12,7 +10,7 @@ exports.get = async (request, response, next) => {
   } catch (error) {
     response
       .status(500)
-      .send({ message: "Falha ao processar a requisição ", data: e });
+      .send({ message: "Falha ao processar a requisição ", data: error });
   }
 };
 
