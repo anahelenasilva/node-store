@@ -5,5 +5,5 @@ global.EMAIL_TEMPLATE =
 module.exports = {
   connectionString: "",
   sendgridKey: "",
-  containerConnectionString: "TBD",
+  containerConnectionString: "",
 };
