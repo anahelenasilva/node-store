@@ -106,7 +106,8 @@ exports.post = async (request, response, next) => {
     price: request.body.price,
     active: true,
     tags: request.body.tags,
-    image: `https://nodestoreana.blob.core.windows.net/product-images/${fileName}`,
+    image: "teste",
+    //image: `https://nodestoreana.blob.core.windows.net/product-images/${fileName}`,
   };
 
   try {
@@ -115,7 +116,7 @@ exports.post = async (request, response, next) => {
   } catch (error) {
     response
       .status(500)
-      .send({ message: "Falha ao processar a requisição ", data: e });
+      .send({ message: "Falha ao processar a requisição ", data: error });
   }
 };
 

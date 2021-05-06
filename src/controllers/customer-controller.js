@@ -4,6 +4,7 @@ const repository = require("../repositories/customer-repository");
 const ValidationContract = require("../validators/fluent-validator");
 const md5 = require("md5");
 const emailService = require("../services/email-service");
+const authService = require("../services/auth-service");
 
 exports.get = async (request, response, next) => {
   try {
@@ -52,6 +53,42 @@ exports.post = async (request, response, next) => {
     response.status(201).send({
       message: "Cliente cadastrado com sucesso",
       customer: data,
+    });
+  } catch (error) {
+    response
+      .status(500)
+      .send({ message: "Falha ao processar a requisição ", data: e });
+  }
+};
+
+exports.authenticate = async (request, response, next) => {
+  try {
+    var data = {
+      email: request.body.email,
+      password: md5(request.body.password + global.SALT_KEY),
+    };
+
+    const customer = await repository.authenticate(data);
+
+    if (!customer) {
+      response.status(404).send({
+        message: "Usuário ou senha inválidos",
+      });
+
+      return;
+    }
+
+    const token = await authService.generateToken({
+      email: customer.email,
+      name: customer.name,
+    });
+
+    response.status(200).send({
+      token: token,
+      data: {
+        email: customer.email,
+        name: customer.name,
+      },
     });
   } catch (error) {
     response
