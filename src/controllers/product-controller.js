@@ -4,6 +4,7 @@ const repository = require("../repositories/product-repository");
 const ValidationContract = require("../validators/fluent-validator");
 const guid = require("guid");
 const azure = require("azure-storage");
+var config = require("../config");
 
 exports.get = async (request, response, next) => {
   try {
@@ -105,7 +106,7 @@ exports.post = async (request, response, next) => {
     price: request.body.price,
     active: true,
     tags: request.body.tags,
-    image: fileName,
+    image: `https://nodestoreana.blob.core.windows.net/product-images/${fileName}`,
   };
 
   try {
