@@ -43,6 +43,7 @@ exports.post = async (request, response, next) => {
       name: request.body.name,
       email: request.body.email,
       password: md5(request.body.password + global.SALT_KEY),
+      roles: ["user"],
     };
 
     var data = await repository.create(customer);
@@ -82,6 +83,7 @@ exports.authenticate = async (request, response, next) => {
       id: customer._id,
       email: customer.email,
       name: customer.name,
+      roles: customer.roles,
     });
 
     response.status(200).send({
@@ -121,6 +123,7 @@ exports.refreshToken = async (request, response, next) => {
       id: customer._id,
       email: customer.email,
       name: customer.name,
+      roles: customer.roles,
     });
 
     response.status(200).send({
