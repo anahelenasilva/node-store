@@ -2,6 +2,7 @@
 
 const repository = require("../repositories/order-repository");
 const guid = require("guid");
+const authService = require("../services/auth-service");
 
 exports.get = async (request, response, next) => {
   try {
@@ -15,8 +16,15 @@ exports.get = async (request, response, next) => {
 };
 
 exports.post = async (request, response, next) => {
-  let orderToSave = {
-    customer: request.body.customer,
+  const token =
+    request.body.token ||
+    request.query.token ||
+    request.headers["x-access-token"];
+
+  const dataToken = await authService.decodeToken(token);
+
+  const orderToSave = {
+    customer: dataToken.id,
     number: guid.raw().substring(0, 6),
     items: request.body.items,
   };
