@@ -97,3 +97,43 @@ exports.authenticate = async (request, response, next) => {
       .send({ message: "Falha ao processar a requisição ", data: e });
   }
 };
+
+exports.refreshToken = async (request, response, next) => {
+  try {
+    const tokenFromRequest =
+      request.body.token ||
+      request.query.token ||
+      request.headers["x-access-token"];
+
+    const dataToken = await authService.decodeToken(tokenFromRequest);
+
+    const customer = await repository.getById(dataToken.id);
+
+    if (!customer) {
+      response.status(404).send({
+        message: "Cliente não encontrado",
+      });
+
+      return;
+    }
+
+    const token = await authService.generateToken({
+      id: customer._id,
+      email: customer.email,
+      name: customer.name,
+    });
+
+    response.status(200).send({
+      token: token,
+      data: {
+        id: customer.id,
+        email: customer.email,
+        name: customer.name,
+      },
+    });
+  } catch (error) {
+    response
+      .status(500)
+      .send({ message: "Falha ao processar a requisição ", data: e });
+  }
+};
